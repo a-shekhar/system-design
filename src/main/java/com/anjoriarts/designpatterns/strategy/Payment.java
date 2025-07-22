@@ -11,7 +11,7 @@ public class Payment {
     }
 
     // initititate payment
-    public void initititatePayment(int amount){
+    public void initiatePayment(int amount){
         paymentStrategy.pay(amount);
     }
     
