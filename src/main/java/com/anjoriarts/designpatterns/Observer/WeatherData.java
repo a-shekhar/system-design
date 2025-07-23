@@ -1,4 +1,4 @@
-package com.anjoriarts.designpatterns.Observer;
+package com.anjoriarts.designpatterns.observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,12 @@ public class WeatherData implements Subject{
     @Override
     public void notifyObservers() {
         for(Observer observer : observers){
-            observer.update(temperature, humidity, pressure);
+            observer.update();
         }
     }
 
-    public void measurementsUpdated(){
+
+    private void measurementsUpdated(){
         notifyObservers();
     }
 
@@ -36,6 +37,18 @@ public class WeatherData implements Subject{
         this.humidity = humidity;
         this.pressure = pressure;
         measurementsUpdated();
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public double getHumidity() {
+        return humidity;
+    }
+
+    public double getPressure() {
+        return pressure;
     }
     
 }

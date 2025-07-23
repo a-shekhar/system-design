@@ -1,4 +1,4 @@
-package com.anjoriarts.designpatterns.Observer;
+package com.anjoriarts.designpatterns.observer;
 
 public class StatisticsDisplay implements Observer, DisplayElement{
 
@@ -8,9 +8,22 @@ public class StatisticsDisplay implements Observer, DisplayElement{
     double minHumidity = Integer.MAX_VALUE;
     double maxPressure = Integer.MIN_VALUE;
     double minPressure = Integer.MAX_VALUE;
+
+    private double temperature, humidity, pressure;
+    private WeatherData data;
+
+
+
+    public StatisticsDisplay(WeatherData data){
+        this.data = data;
+    }
     
     @Override
-    public void update(double temperature, double humidity, double pressure) {
+    public void update() {
+
+        this.temperature = data.getTemperature();
+        this.humidity = data.getHumidity();
+        this.pressure = data.getPressure();
 
         if(temperature > maxTemperature){
             maxTemperature = temperature;
@@ -41,9 +54,9 @@ public class StatisticsDisplay implements Observer, DisplayElement{
     @Override
     public void display(){
         System.out.println("StatisticsDisplay notified:: " + 
-        " Max Temparture: " + maxTemperature + ", Min Temparture: " + minTemperature +
-        " Max Humidity: " + maxHumidity + ", Min Humidity: " + minTemperature +
-        " Max Pressure: " + maxPressure + ", Min Pressure: " + minPressure);
+        " Max Temperature: " + maxTemperature + ", Min Temperature: " + minTemperature +
+        ", Max Humidity: " + maxHumidity + ", Min Humidity: " + minHumidity +
+        ", Max Pressure: " + maxPressure + ", Min Pressure: " + minPressure);
     }
     
 }

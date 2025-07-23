@@ -1,6 +1,5 @@
-package com.anjoriarts.designpatterns.Observer;
+package com.anjoriarts.designpatterns.observer;
 
 public interface Observer {
-
-    void update(double temperature, double humidity, double pressure);
+    void update();
 }
