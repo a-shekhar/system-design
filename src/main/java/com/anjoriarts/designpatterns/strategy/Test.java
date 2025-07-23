@@ -15,6 +15,6 @@ public class Test {
 
 
         payment.setPaymentStrategy(new WalletPayment("1234567890"));
-        payment.initititatePayment(initiatePayment4800);
+        payment.initiatePayment(4800);
     }
 }
