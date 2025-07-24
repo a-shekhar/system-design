@@ -3,13 +3,13 @@ package com.anjoriarts.lld.parkinglot.vehicle;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class VehicleFactory {
-    public static Vehicle getInstance(String type){
+    public static Vehicle getInstance(VehicleType type){
 
         int number = ThreadLocalRandom.current().nextInt(10000, 100000);
-        String license = type.toUpperCase() + number;
+        String license = type.name() + number;
         Vehicle vehicle;
 
-        switch(type.toLowerCase()){
+        switch(type.name().toLowerCase()){
             case "car":
                 vehicle = new Car(license);
                 break;

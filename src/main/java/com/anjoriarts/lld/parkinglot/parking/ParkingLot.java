@@ -30,55 +30,53 @@ public class ParkingLot{
         return carSlots;
     }
 
-    public ParkingSlot assignParkingLot(Vehicle vehicle, VehicleType type){
-        ParkingSlot slot = null;
+    private ParkingSlot findFirstFreeSlot(List<ParkingSlot> slots, Vehicle vehicle){
+        ParkingSlot slotAvailable = null;
         ZonedDateTime entryDateTime = ZonedDateTime.now().minusDays(2);
-        if(type == VehicleType.CAR){
-            for(ParkingSlot carSlot: carSlots){
-                if(!carSlot.isOccupied()){
-                    carSlot.setOccupied(true);
-                    carSlot.setEntryTime(entryDateTime);
-                    carSlot.setParkedVehicle(vehicle);
-                    slot = carSlot;
-                    break;
-                }
-            }
-        } else if(type == VehicleType.BIKE){
-            for(ParkingSlot bikeSlot: bikeSlots){
-                if(!bikeSlot.isOccupied()){
-                    bikeSlot.setOccupied(true);
-                    bikeSlot.setEntryTime(entryDateTime);
-                    bikeSlot.setParkedVehicle(vehicle);
-                    slot = bikeSlot;
-                    break;
-                }
+        for(ParkingSlot slot: slots){
+            if(!slot.isOccupied()){
+                slot.setOccupied(true);
+                slot.setEntryTime(entryDateTime);
+                slot.setParkedVehicle(vehicle);
+                slotAvailable = slot;
+                break;
             }
         }
 
+        return slotAvailable;
+    }
+
+    public ParkingSlot assignParkingLot(Vehicle vehicle, VehicleType type){
+        ParkingSlot slot = null;
+        if(type == VehicleType.BIKE){
+            slot = this.findFirstFreeSlot(bikeSlots, vehicle);
+        }else if(type == VehicleType.CAR){
+            slot = this.findFirstFreeSlot(carSlots, vehicle);
+        } 
+        if (slot == null){
+         throw new IllegalStateException("No free slot available");
+        }
         return slot;
     }
 
-    public String releasePakingSlot(ParkingSlot slot, VehicleType type){
-        if(type == VehicleType.BIKE){
-            for(ParkingSlot bikeSlot: bikeSlots){
-                if(bikeSlot.getParkingSlotNo() == slot.getParkingSlotNo()){
-                    bikeSlot.setOccupied(false);
-                    bikeSlot.setParkedVehicle(null);
-                    bikeSlot.setEntryTime(null);
-                    break;
-                }
-            }
-        }else if(type == VehicleType.CAR){
-            for(ParkingSlot carSlot: carSlots){
-                if(carSlot.getParkingSlotNo() == slot.getParkingSlotNo()){
-                    carSlot.setOccupied(false);
-                    carSlot.setParkedVehicle(null);
-                    carSlot.setEntryTime(null);
-                    break;
-                }
+    private ParkingSlot releaseSlot(ParkingSlot slot, List<ParkingSlot> slotList){
+        for(ParkingSlot slotIterator: slotList){
+            if(slotIterator.getParkingSlotNo() == slot.getParkingSlotNo()){
+                slot.setOccupied(false);
+                slot.setParkedVehicle(null);
+                slot.setEntryTime(null);
+                break;
             }
         }
+        return slot;
+    } 
 
+    public String releaseParkingSlot(ParkingSlot slot, VehicleType type){
+        if(type == VehicleType.BIKE){
+            slot = this.releaseSlot(slot, bikeSlots);
+        }else if(type == VehicleType.CAR){
+            slot = this.releaseSlot(slot, carSlots);
+        }
         return "Released parking lot " + slot;
     }
 
